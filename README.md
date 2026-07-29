@@ -4,7 +4,7 @@ Personal portfolio website — Salesforce Builder &amp; AI Enthusiast | B.Tech C
 
 Personal portfolio website built with vanilla HTML, CSS, and JavaScript.
 
-🔗 **Live:** [govindkumar.dev](https://notgovindkumar.github.io/portfolio/) *(update once deployed)*
+🔗 **Live:** [govindkumar.dev](https://notgovindkumar.github.io/) *(update once deployed)*
 
 ## Stack
 
