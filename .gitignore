@@ -1,0 +1,4 @@
+# Local Spotify credentials
+.env
+.env.local
+.env.*.local
