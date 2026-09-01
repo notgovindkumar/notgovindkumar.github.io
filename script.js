@@ -714,8 +714,8 @@
       menu.className = 'egg-context-menu mono';
 
       const items = [
-        { label: 'View source on GitHub ↗', action: function () { window.open('https://github.com/notgovindkumar', '_blank', 'noopener'); } },
-        { label: 'Say hi ↗', action: function () { window.location.href = 'mailto:hello@notgovindkumar.dev'; } }
+        { label: 'View source on GitHub ↗', action: function () { window.open('https://github.com/notgovindkumar/notgovindkumar.github.io', '_blank', 'noopener'); } },
+        { label: 'Say hi ↗', action: function () { window.location.href = 'mailto:baranwalgovind2007@gmail.com'; } }
       ];
 
       items.forEach(function (item) {
