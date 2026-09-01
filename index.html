@@ -6,15 +6,17 @@
   <title>Govind Kumar — Salesforce Builder & AI Enthusiast</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- Background layers -->
   <div class="bg-grid" aria-hidden="true"></div>
-  <div class="orb orb--teal" aria-hidden="true"></div>
-  <div class="orb orb--blue" aria-hidden="true"></div>
+
+  <!-- Custom cursor -->
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
 
   <!-- ═══════════════════════ NAV ═══════════════════════ -->
   <nav class="nav" id="nav">
@@ -32,6 +34,7 @@
 
   <!-- ═══════════════════════ HERO ═══════════════════════ -->
   <section class="hero" id="hero">
+    <div class="hero__glow" id="heroGlow" aria-hidden="true"></div>
     <div class="hero__inner">
       <p class="hero__label mono">B.Tech Student '28 · SKIT Jaipur</p>
       <h1 class="hero__heading">
@@ -81,22 +84,22 @@
         </div>
         <div class="about__stats reveal reveal--right">
           <div class="stat-card">
-            <span class="stat-card__icon">🏅</span>
+            <span class="stat-card__index mono">01</span>
             <span class="stat-card__value">AI Cert</span>
             <span class="stat-card__label mono">Salesforce Certified<br>AI Associate</span>
           </div>
           <div class="stat-card">
-            <span class="stat-card__icon">🦅</span>
+            <span class="stat-card__index mono">02</span>
             <span class="stat-card__value">Ranger</span>
             <span class="stat-card__label mono">Trailblazer<br>Rank</span>
           </div>
           <div class="stat-card">
-            <span class="stat-card__icon">📚</span>
+            <span class="stat-card__index mono">03</span>
             <span class="stat-card__value">5th Sem</span>
             <span class="stat-card__label mono">B.Tech CSE<br>SKIT Jaipur</span>
           </div>
           <div class="stat-card">
-            <span class="stat-card__icon">⚡</span>
+            <span class="stat-card__index mono">04</span>
             <span class="stat-card__value">2+ Yrs</span>
             <span class="stat-card__label mono">Salesforce<br>Ecosystem</span>
           </div>
@@ -120,7 +123,7 @@
           <div class="cert-cards">
             <div class="cert-card">
               <div class="cert-card__badge">
-                <span class="cert-card__badge-icon">🏅</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 5.5L20 8.3l-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.6-.8L12 2z"/></svg>
               </div>
               <div class="cert-card__info">
                 <span class="cert-card__name">Salesforce Certified AI Associate</span>
@@ -130,7 +133,7 @@
             </div>
             <div class="cert-card">
               <div class="cert-card__badge">
-                <span class="cert-card__badge-icon">🦅</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 3.8L18 7.4l-3 3 .8 4.3L12 12.8 8.2 14.7 9 10.4l-3-3 4.2-.6L12 3z"/><path d="M8 17l-1 4 5-2 5 2-1-4"/></svg>
               </div>
               <div class="cert-card__info">
                 <span class="cert-card__name">Trailblazer Ranger</span>
@@ -148,6 +151,7 @@
             <span class="tag">Flow Builder</span>
             <span class="tag">Validation Rules</span>
             <span class="tag">Lightning Experience</span>
+            <span class="tag">Copado DevOps</span>
           </div>
         </div>
 
@@ -200,7 +204,7 @@
               </div>
               <div class="timeline__meta">
                 <span class="timeline__date mono">May 2026 – Jul 2026</span>
-                <span class="badge badge--ongoing"><span class="badge__dot"></span>ongoing</span>
+                <span class="badge badge--completed">completed</span>
               </div>
             </div>
             <ul class="timeline__bullets">
@@ -271,7 +275,7 @@
         <!-- Project 1: GeoBusHub -->
         <div class="project-card reveal">
           <div class="project-card__top">
-            <span class="project-card__emoji">🚌</span>
+            <span class="project-card__index mono">01</span>
             <div class="project-card__links">
               <a href="https://notgovindkumar.github.io/geo-bus-hub/passenger.html" target="_blank" rel="noopener" class="project-card__link mono" aria-label="Live Demo">Live ↗</a>
               <a href="https://github.com/notgovindkumar/geo-bus-hub" target="_blank" rel="noopener" class="project-card__link mono" aria-label="View on GitHub">GitHub ↗</a>
@@ -288,17 +292,36 @@
           </div>
         </div>
 
-        <!-- Project 2: OTP Verification -->
+        <!-- Project 2: Rental360 -->
         <div class="project-card reveal">
           <div class="project-card__top">
-            <span class="project-card__emoji">🔐</span>
+            <span class="project-card__index mono">02</span>
+            <div class="project-card__links">
+              <span class="project-card__link mono" style="cursor:default;">Private CRM</span>
+            </div>
+          </div>
+          <div class="project-card__badge mono">Salesforce Admin</div>
+          <h3 class="project-card__title">Rental360</h3>
+          <p class="project-card__desc">Live rental management CRM built on Salesforce Lightning for a family-owned 6-room rental business — custom objects, automated Flows, validation rules, and mobile-friendly dashboards handling agreements, occupants, payments, and per-room electricity billing.</p>
+          <div class="project-card__tags">
+            <span class="tag tag--sm">Salesforce Admin</span>
+            <span class="tag tag--sm">Flow Builder</span>
+            <span class="tag tag--sm">Lightning</span>
+            <span class="tag tag--sm">Validation Rules</span>
+          </div>
+        </div>
+
+        <!-- Project 3: OTP Verification -->
+        <div class="project-card reveal">
+          <div class="project-card__top">
+            <span class="project-card__index mono">03</span>
             <div class="project-card__links">
               <a href="https://notgovindkumar.github.io/OTP-Verification-Project/" target="_blank" rel="noopener" class="project-card__link mono" aria-label="Live Demo">Live ↗</a>
-              <a href="https://github.com/notgovindkumar" target="_blank" rel="noopener" class="project-card__link mono" aria-label="View on GitHub">GitHub ↗</a>
+              <a href="https://github.com/notgovindkumar/OTP-Verification-Project" target="_blank" rel="noopener" class="project-card__link mono" aria-label="View on GitHub">GitHub ↗</a>
             </div>
           </div>
           <h3 class="project-card__title">OTP Verification System</h3>
-          <p class="project-card__desc">Web-based OTP authentication system built for college. Initially developed in HTML/CSS/JS, then ported to PHP for server-side OTP generation and validation.</p>
+          <p class="project-card__desc">Web-based OTP authentication system built for college. Initially developed in HTML/CSS/JS, then ported to PHP for server-side OTP generation and validation. <em style="color: var(--text-3); font-style: normal;">(Live demo's Firebase backend may currently be inactive.)</em></p>
           <div class="project-card__tags">
             <span class="tag tag--sm">HTML</span>
             <span class="tag tag--sm">CSS</span>
@@ -307,16 +330,72 @@
           </div>
         </div>
 
+        <!-- Project 4: SKIT Football Trials -->
+        <div class="project-card reveal">
+          <div class="project-card__top">
+            <span class="project-card__index mono">04</span>
+            <div class="project-card__links">
+              <a href="https://notgovindkumar.github.io/skit-football-trials/" target="_blank" rel="noopener" class="project-card__link mono" aria-label="Live Site">Live ↗</a>
+              <a href="https://github.com/notgovindkumar/skit-football-trials" target="_blank" rel="noopener" class="project-card__link mono" aria-label="View on GitHub">GitHub ↗</a>
+            </div>
+          </div>
+          <div class="project-card__badge mono">Event Page</div>
+          <h3 class="project-card__title">SKIT Football Trials</h3>
+          <p class="project-card__desc">Promotional landing page built for SKIT Jaipur's football selection trials — animated hero, trial details, gear checklist, and a WhatsApp group CTA for freshers to join.</p>
+          <div class="project-card__tags">
+            <span class="tag tag--sm">HTML</span>
+            <span class="tag tag--sm">Tailwind CSS</span>
+            <span class="tag tag--sm">JavaScript</span>
+          </div>
+        </div>
+
+        <!-- Project 5: Intent Tab -->
+        <div class="project-card reveal">
+          <div class="project-card__top">
+            <span class="project-card__index mono">05</span>
+            <div class="project-card__links">
+              <a href="https://github.com/always-yash/Intent-tab" target="_blank" rel="noopener" class="project-card__link mono" aria-label="View on GitHub">GitHub ↗</a>
+            </div>
+          </div>
+          <div class="project-card__badge mono">Chrome Extension · Collab</div>
+          <h3 class="project-card__title">Intent Tab</h3>
+          <p class="project-card__desc">A Manifest V3 Chrome extension that overrides the new-tab page to capture your intent before you browse — live session tracking with a running timer, and in-page distraction toasts when you drift onto YouTube, Instagram, or Reddit mid-session.</p>
+          <div class="project-card__tags">
+            <span class="tag tag--sm">JavaScript</span>
+            <span class="tag tag--sm">Chrome APIs</span>
+            <span class="tag tag--sm">Manifest V3</span>
+            <span class="tag tag--sm">chrome.storage</span>
+          </div>
+        </div>
+
         <!-- Placeholder -->
         <div class="project-card project-card--placeholder reveal">
           <div class="project-card__top">
-            <span class="project-card__emoji">🤖</span>
+            <span class="project-card__index mono">06</span>
           </div>
           <h3 class="project-card__title">Coming Soon</h3>
           <p class="project-card__desc">An AI or Salesforce project is in the works.</p>
         </div>
 
       </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ CO-DEVELOPER STRIP ═══════════════════════ -->
+  <section class="codev">
+    <div class="codev__inner reveal">
+      <span class="codev__label mono">My Co-Developer →</span>
+      <a href="https://www.linkedin.com/in/always-yash/" target="_blank" rel="noopener" class="codev__pill">
+        <span class="codev__name">Yash Rundla</span>
+        <span class="codev__avatars">
+          <a href="https://github.com/always-yash/" target="_blank" rel="noopener" class="codev__avatar codev__avatar--gh" aria-label="Yash's GitHub" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+          <a href="https://www.always-yash.me/" target="_blank" rel="noopener" class="codev__avatar codev__avatar--site" aria-label="Yash's Portfolio" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 5.7 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.7-4-9s1.5-6.5 4-9z"/></svg>
+          </a>
+        </span>
+      </a>
     </div>
   </section>
 

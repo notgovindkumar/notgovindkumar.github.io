@@ -133,9 +133,9 @@
     style.id = 'gk-dynamic-styles';
     style.textContent = [
       '@keyframes dotGlow {',
-      '  from { box-shadow: 0 0 0 0 rgba(0,212,160,0.8); transform: scale(0.5); opacity: 0; }',
-      '  60%  { box-shadow: 0 0 0 12px rgba(0,212,160,0); transform: scale(1.2); opacity: 1; }',
-      '  to   { box-shadow: 0 0 14px rgba(0,212,160,0.4), 0 0 28px rgba(0,212,160,0.15); transform: scale(1); opacity: 1; }',
+      '  from { box-shadow: 0 0 0 0 rgba(10,10,10,0.7); transform: scale(0.5); opacity: 0; }',
+      '  60%  { box-shadow: 0 0 0 12px rgba(10,10,10,0); transform: scale(1.2); opacity: 1; }',
+      '  to   { box-shadow: 0 0 14px rgba(10,10,10,0.3), 0 0 28px rgba(10,10,10,0.1); transform: scale(1); opacity: 1; }',
       '}',
       '.nav__link.active { color: var(--teal); }',
       '.nav__link.active::after { right: 0; }',
@@ -172,7 +172,7 @@
       const glow = card.querySelector('.cert-card__glow');
       if (glow) {
         glow.style.background =
-          'radial-gradient(circle at ' + x + '% ' + y + '%, rgba(0,212,160,0.15), transparent 60%)';
+          'radial-gradient(circle at ' + x + '% ' + y + '%, rgba(10,10,10,0.08), transparent 60%)';
       }
     });
   });
@@ -201,5 +201,119 @@
       }, 400);
     });
   });
+
+  /* ─────────────────────────────────────────
+     10. CUSTOM CURSOR — dot + trailing ring,
+         morphs on hover of interactive/text elements
+  ─────────────────────────────────────────── */
+  const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
+  if (!isTouch) {
+    document.documentElement.classList.add('has-custom-cursor');
+
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ringX = mouseX;
+    let ringY = mouseY;
+
+    window.addEventListener('mousemove', function (e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (cursorDot) {
+        cursorDot.style.transform = 'translate(' + mouseX + 'px,' + mouseY + 'px) translate(-50%,-50%)';
+      }
+    });
+
+    // Smoothly trail the ring behind the dot
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      if (cursorRing) {
+        cursorRing.style.transform = 'translate(' + ringX + 'px,' + ringY + 'px) translate(-50%,-50%)';
+      }
+      requestAnimationFrame(animateRing);
+    }
+    requestAnimationFrame(animateRing);
+
+    // Hide cursor when leaving window
+    document.addEventListener('mouseleave', function () {
+      if (cursorDot) cursorDot.classList.add('is-hidden');
+      if (cursorRing) cursorRing.classList.add('is-hidden');
+    });
+    document.addEventListener('mouseenter', function () {
+      if (cursorDot) cursorDot.classList.remove('is-hidden');
+      if (cursorRing) cursorRing.classList.remove('is-hidden');
+    });
+
+    // Morph ring on hover of interactive elements
+    const hoverTargets = document.querySelectorAll('a, button, .btn, .project-card, .cert-card, .stat-card, .tag');
+    hoverTargets.forEach(function (el) {
+      el.addEventListener('mouseenter', function () {
+        if (cursorRing) cursorRing.classList.add('is-hover');
+      });
+      el.addEventListener('mouseleave', function () {
+        if (cursorRing) cursorRing.classList.remove('is-hover');
+      });
+    });
+
+    // Thin "text caret" style ring on paragraphs/headings
+    const textTargets = document.querySelectorAll('p, h1, h2, h3');
+    textTargets.forEach(function (el) {
+      el.addEventListener('mouseenter', function () {
+        if (cursorRing) cursorRing.classList.add('is-text');
+      });
+      el.addEventListener('mouseleave', function () {
+        if (cursorRing) cursorRing.classList.remove('is-text');
+      });
+    });
+
+    /* ─────────────────────────────────────────
+       11. MAGNETIC BUTTONS — pull toward cursor
+    ─────────────────────────────────────────── */
+    document.querySelectorAll('.btn, .nav__logo').forEach(function (el) {
+      let raf = null;
+
+      el.addEventListener('mousemove', function (e) {
+        const rect = el.getBoundingClientRect();
+        const relX = e.clientX - (rect.left + rect.width / 2);
+        const relY = e.clientY - (rect.top + rect.height / 2);
+        const strength = 0.28;
+
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(function () {
+          el.style.transform = 'translate(' + (relX * strength) + 'px,' + (relY * strength) + 'px)';
+        });
+      });
+
+      el.addEventListener('mouseleave', function () {
+        if (raf) cancelAnimationFrame(raf);
+        el.style.transition = 'transform 0.45s cubic-bezier(0.16,1,0.3,1)';
+        el.style.transform = 'translate(0,0)';
+        setTimeout(function () { el.style.transition = ''; }, 450);
+      });
+    });
+
+    /* ─────────────────────────────────────────
+       12. HERO GLOW — soft light tracks the cursor
+    ─────────────────────────────────────────── */
+    const hero = document.getElementById('hero');
+    const heroGlow = document.getElementById('heroGlow');
+
+    if (hero && heroGlow) {
+      hero.addEventListener('mousemove', function (e) {
+        const rect = hero.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        heroGlow.style.transform = 'translate(' + x + 'px,' + y + 'px) translate(-50%,-50%)';
+        heroGlow.classList.add('is-visible');
+      });
+      hero.addEventListener('mouseleave', function () {
+        heroGlow.classList.remove('is-visible');
+      });
+    }
+  }
 
 })();
