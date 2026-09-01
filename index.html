@@ -21,7 +21,7 @@
   <!-- ═══════════════════════ NAV ═══════════════════════ -->
   <nav class="nav" id="nav">
     <div class="nav__inner">
-      <a href="#hero" class="nav__logo">GK<span class="accent">.</span></a>
+      <a href="#hero" class="nav__logo" id="navLogo">GK<span class="accent">.</span></a>
       <ul class="nav__links">
         <li><a href="#about" class="nav__link">about</a></li>
         <li><a href="#skills" class="nav__link">skills</a></li>
@@ -385,7 +385,7 @@
   <section class="codev">
     <div class="codev__inner reveal">
       <span class="codev__label mono">My Co-Developer →</span>
-      <a href="https://www.linkedin.com/in/always-yash/" target="_blank" rel="noopener" class="codev__pill">
+      <a href="https://www.always-yash.me/" target="_blank" rel="noopener" class="codev__pill">
         <span class="codev__name">Yash Rundla</span>
         <span class="codev__avatars">
           <a href="https://github.com/always-yash/" target="_blank" rel="noopener" class="codev__avatar codev__avatar--gh" aria-label="Yash's GitHub" onclick="event.stopPropagation()">
@@ -403,8 +403,9 @@
   <footer class="footer">
     <div class="footer__inner">
       <div class="footer__left">
-        <span class="footer__name">Govind Kumar</span>
+        <span class="footer__name" id="footerName">Govind Kumar</span>
         <span class="footer__sub mono">Salesforce Builder · AI Enthusiast · B.Tech Student '28</span>
+        <div class="egg-end-msg mono" id="eggEndMsg">You've reached the end. Thanks for scrolling this far — go build something. </div>
       </div>
       <div class="footer__links">
         <a href="https://www.linkedin.com/in/govindbaranwalkumar/" target="_blank" rel="noopener" class="footer__link" aria-label="LinkedIn">
@@ -422,6 +423,15 @@
       <span class="mono">Built with curiosity &amp; caffeine · 2025</span>
     </div>
   </footer>
+
+  <!-- Easter egg overlays -->
+  <div class="egg-terminal" id="eggTerminal">
+    <div class="egg-terminal__box">
+      <div class="egg-terminal__line" id="eggTerminalLine"><span id="eggTerminalText"></span><span class="egg-terminal__cursor"></span></div>
+    </div>
+  </div>
+
+  <div class="egg-boot" id="eggBoot"></div>
 
   <script src="script.js"></script>
 </body>

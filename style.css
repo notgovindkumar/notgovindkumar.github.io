@@ -79,7 +79,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .nav__inner,
 .hero__inner,
 .footer__inner {
-  max-width: 1200px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 0 40px;
 }
@@ -835,7 +835,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 .codev__inner {
-  max-width: 1200px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 0 40px;
   display: flex;
@@ -957,7 +957,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 .footer__bottom {
-  max-width: 1200px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 0 40px;
   text-align: center;
@@ -1087,3 +1087,313 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
     cursor: auto;
   }
 }
+
+/* ══════════════════════════════════════════════
+   LARGE SCREENS — give content more room to breathe
+   (laptop, desktop, tablet landscape; mobile untouched)
+═══════════════════════════════════════════════ */
+@media (min-width: 1100px) {
+  .section__inner,
+  .nav__inner,
+  .hero__inner,
+  .footer__inner,
+  .codev__inner {
+    padding: 0 56px;
+  }
+
+  :root { --section-gap: 160px; }
+
+  .section__header { margin-bottom: 76px; }
+
+  .hero__heading { font-size: clamp(3.5rem, 8.5vw, 9.5rem); }
+  .hero__sub { max-width: 620px; font-size: 1.12rem; }
+  .section__title { font-size: clamp(2.2rem, 3.4vw, 3.6rem); }
+
+  .about__grid { gap: 110px; }
+  .about__bio p { font-size: 1.05rem; }
+  .about__stats { gap: 18px; }
+  .stat-card { padding: 26px 24px; }
+
+  .skills__grid { gap: 90px; }
+  .cert-card { padding: 22px 24px; }
+
+  .timeline { padding-left: 40px; }
+  .timeline__content { padding: 32px 36px; }
+
+  .projects__grid {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 28px;
+  }
+  .project-card { padding: 32px; }
+
+  .footer__inner { padding-bottom: 34px; }
+}
+
+@media (min-width: 1600px) {
+  .section__inner,
+  .nav__inner,
+  .hero__inner,
+  .footer__inner,
+  .codev__inner {
+    max-width: 1520px;
+    padding: 0 64px;
+  }
+
+  :root { --section-gap: 190px; }
+
+  .hero__heading { font-size: clamp(4rem, 8vw, 10.5rem); }
+  .hero__sub { max-width: 680px; font-size: 1.18rem; }
+  .section__title { font-size: clamp(2.4rem, 3.2vw, 4rem); }
+
+  .projects__grid {
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 32px;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   EASTER EGGS
+═══════════════════════════════════════════════ */
+
+/* 1. Konami code — glitch flash */
+.egg-glitch {
+  animation: eggGlitchFlash 0.6s steps(2, end);
+}
+@keyframes eggGlitchFlash {
+  0%   { filter: invert(0); }
+  20%  { filter: invert(1) hue-rotate(180deg); }
+  40%  { filter: invert(0) contrast(1.4); }
+  60%  { filter: invert(1); }
+  80%  { filter: invert(0) contrast(1.2); }
+  100% { filter: invert(0); }
+}
+
+/* 3. Logo click x5 tooltip */
+.egg-logo-tip {
+  position: fixed;
+  z-index: 300;
+  background: var(--text);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 8px 14px;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  white-space: nowrap;
+}
+.egg-logo-tip.show { opacity: 1; transform: translateY(0); }
+
+.nav__logo.egg-spin { animation: eggSpin 0.6s ease; }
+@keyframes eggSpin {
+  0%   { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 4. "sudo" terminal overlay */
+.egg-terminal {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: rgba(10,10,10,0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.egg-terminal.show { display: flex; }
+.egg-terminal__box {
+  width: min(560px, 92vw);
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 20px 22px;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: #e8e8e8;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+}
+.egg-terminal__line::before { content: "$ "; color: #6ee7b7; }
+.egg-terminal__cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  background: #e8e8e8;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: eggBlink 0.9s steps(1) infinite;
+}
+@keyframes eggBlink { 50% { opacity: 0; } }
+
+/* 5. Shift-held cursor trail dots */
+.egg-trail-dot {
+  position: fixed;
+  z-index: 9998;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--teal);
+  pointer-events: none;
+  opacity: 0.5;
+  animation: eggTrailFade 0.6s ease forwards;
+}
+@keyframes eggTrailFade {
+  to { opacity: 0; transform: scale(0.4); }
+}
+
+/* 6. End-of-scroll message */
+.egg-end-msg {
+  text-align: center;
+  padding: 18px 0 4px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-3);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.egg-end-msg.show { opacity: 1; transform: translateY(0); }
+
+/* 7. Boot log overlay (footer name double-click) */
+.egg-boot {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: #000;
+  color: #6ee7b7;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  padding: 40px;
+  overflow: hidden;
+  display: none;
+}
+.egg-boot.show { display: block; }
+.egg-boot__line { opacity: 0; animation: eggBootIn 0.15s ease forwards; }
+@keyframes eggBootIn { to { opacity: 1; } }
+
+/* 8. Invert toggle */
+html.egg-inverted {
+  filter: invert(1) hue-rotate(180deg);
+  transition: filter 0.3s ease;
+}
+
+/* 9. Rapid click x10 — particle burst */
+.egg-particle {
+  position: fixed;
+  z-index: 9998;
+  width: 5px;
+  height: 5px;
+  background: var(--teal);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: eggParticleBurst 0.65s ease-out forwards;
+}
+@keyframes eggParticleBurst {
+  to {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)));
+    opacity: 0;
+  }
+}
+
+/* 11. Idle cursor ring breathing pulse (animates box-shadow/opacity only —
+       transform is owned by the JS trail loop every frame, so scaling
+       via transform here would fight it and flicker) */
+.cursor-ring.egg-idle-pulse {
+  animation: eggIdleBreathe 2.2s ease-in-out infinite;
+}
+@keyframes eggIdleBreathe {
+  0%, 100% { opacity: 0.5; box-shadow: 0 0 0 0 var(--teal-glow); }
+  50%      { opacity: 1;   box-shadow: 0 0 0 10px transparent; }
+}
+
+/* 12. Project card long-press flip note */
+.project-card { position: relative; }
+.egg-card-flip {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  background: var(--teal);
+  color: var(--bg);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+.egg-card-flip.show { opacity: 1; transform: scale(1); }
+
+/* 13. "1410" popup — reuses .egg-logo-tip base */
+.egg-1410-tip { z-index: 500; font-size: 0.85rem; padding: 12px 20px; }
+
+/* 15. Custom right-click context menu */
+.egg-context-menu {
+  position: fixed;
+  z-index: 600;
+  background: var(--bg);
+  border: 1px solid var(--border-hover);
+  border-radius: 8px;
+  padding: 6px;
+  min-width: 200px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.egg-context-menu.show { opacity: 1; transform: translateY(0); }
+.egg-context-menu__item {
+  font-size: 0.82rem;
+  padding: 9px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: var(--text-2);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.egg-context-menu__item:hover { background: var(--teal-dim); color: var(--teal); }
+
+/* 16. "eggs" cheat sheet */
+.egg-cheatsheet {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(10,10,10,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.egg-cheatsheet.show { opacity: 1; }
+.egg-cheatsheet__box {
+  width: min(480px, 92vw);
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--bg);
+  border: 1px solid var(--border-hover);
+  border-radius: 10px;
+  padding: 22px 24px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+}
+.egg-cheatsheet__title {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin-bottom: 14px;
+  letter-spacing: 0.04em;
+}
+.egg-cheatsheet__line {
+  font-size: 0.82rem;
+  color: var(--text-2);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.egg-cheatsheet__line:last-child { border-bottom: none; }
