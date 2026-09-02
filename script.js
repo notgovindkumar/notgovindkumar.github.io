@@ -361,58 +361,44 @@
     });
   }
 
-  /* ── 4. Typed terminal commands + birthday boot sequence ── */
+  /* ── 4. Type "sudo" → fake terminal command ── */
   (function () {
+    const target = 'sudo';
+    let buffer = '';
     const overlay = document.getElementById('eggTerminal');
     const textEl = document.getElementById('eggTerminalText');
-    const commands = {
-      sudo: 'sudo hire-govind --now',
-      help: 'Available commands:\nhelp — list available commands\nwhoami — inspect the builder\nspotify — open the Soundtrack section\nsecret — reveal a hint',
-      whoami: 'govind kumar\nsalesforce builder · ai enthusiast · b.tech cse \'28',
-      spotify: 'Open the Soundtrack section.',
-      secret: 'There are more easter eggs than documented.',
-      '2207': 'BOOT SEQUENCE DETECTED\n\n02 Feb 2007\n\nGovind.exe initialized successfully.\n\nVersion: Human 18.0\n\nStatus:\nStill debugging life...\n\nAchievement unlocked:\nSurvived another year.'
-    };
-    let buffer = '';
+    const fullCmd = 'sudo hire-govind --now';
     let typing = false;
-    let closeTimer = null;
-
-    // Reusable terminal renderer for current and future typed commands.
-    function showEggTerminal(message) {
-      if (!overlay || !textEl || typing) return;
-      typing = true;
-      clearTimeout(closeTimer);
-      overlay.classList.add('show');
-      textEl.textContent = '';
-      let i = 0;
-      const typeInterval = setInterval(function () {
-        textEl.textContent = message.slice(0, i + 1);
-        i++;
-        if (i >= message.length) {
-          clearInterval(typeInterval);
-          closeTimer = setTimeout(closeEggTerminal, 2800);
-        }
-      }, 24);
-    }
-
-    function closeEggTerminal() {
-      if (overlay) overlay.classList.remove('show');
-      typing = false;
-      clearTimeout(closeTimer);
-    }
 
     document.addEventListener('keydown', function (e) {
       if (e.key.length !== 1) return;
-      buffer = (buffer + e.key.toLowerCase()).slice(-12);
-      Object.keys(commands).some(function (command) {
-        if (!buffer.endsWith(command)) return false;
+      buffer = (buffer + e.key.toLowerCase()).slice(-target.length);
+      if (buffer === target && !typing && overlay) {
+        typing = true;
         buffer = '';
-        showEggTerminal(commands[command]);
-        return true;
-      });
+        overlay.classList.add('show');
+        textEl.textContent = '';
+        let i = 0;
+        const typeInterval = setInterval(function () {
+          textEl.textContent += fullCmd[i];
+          i++;
+          if (i >= fullCmd.length) {
+            clearInterval(typeInterval);
+            setTimeout(function () {
+              overlay.classList.remove('show');
+              typing = false;
+            }, 1600);
+          }
+        }, 55);
+      }
     });
 
-    if (overlay) overlay.addEventListener('click', closeEggTerminal);
+    if (overlay) {
+      overlay.addEventListener('click', function () {
+        overlay.classList.remove('show');
+        typing = false;
+      });
+    }
   })();
 
   /* ── 5. Hold Shift → dotted cursor trail ── */
@@ -554,6 +540,43 @@
     });
   })();
 
+  /* ── 10. Type "whoami" → terminal-style overlay ── */
+  (function () {
+    const target = 'whoami';
+    let buffer = '';
+    const overlay = document.getElementById('eggTerminal');
+    const textEl = document.getElementById('eggTerminalText');
+    const whoamiLines = [
+      'govind kumar',
+      'salesforce builder · ai enthusiast · b.tech cse \'28'
+    ];
+    let typing = false;
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key.length !== 1) return;
+      buffer = (buffer + e.key.toLowerCase()).slice(-target.length);
+      if (buffer === target && !typing && overlay) {
+        typing = true;
+        buffer = '';
+        overlay.classList.add('show');
+        textEl.innerHTML = '';
+        const full = whoamiLines.join('\n');
+        let i = 0;
+        const typeInterval = setInterval(function () {
+          textEl.innerHTML = full.slice(0, i + 1).replace(/\n/g, '<br>');
+          i++;
+          if (i >= full.length) {
+            clearInterval(typeInterval);
+            setTimeout(function () {
+              overlay.classList.remove('show');
+              typing = false;
+            }, 1800);
+          }
+        }, 40);
+      }
+    });
+  })();
+
   /* ── 11. Idle 30-45s → cursor ring breathing pulse ── */
   (function () {
     const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
@@ -621,162 +644,31 @@
     });
   })();
 
-  /* ── 13. Type "1410" → toggled rotating personal memory ── */
+  /* ── 13. Type "1410" → personal easter egg popup ── */
   (function () {
     const target = '1410';
     let buffer = '';
     let popup = null;
-    let messageIndex = 0;
-    const messages = [
-      'hi. you know why this number matters. 🤍',
-      'ACCESSING MEMORY...\n...\n...\nEntry #1410 found.\n\nSome people become memories.\nSome become motivation.\n\nAnd some somehow become both.',
-      'There are people you remember.\nAnd then there are people who quietly become a part of your every day.',
-      'If she\'s reading this,\nyes, this one was always yours. 🤍',
-      'Error 1410:\nToo many thoughts.\nOne person detected.',
-      'Warning:\nSystem performance reduced.\n\nCause:\nOne girl occupying excessive memory.'
-    ];
 
     document.addEventListener('keydown', function (e) {
       if (e.key.length !== 1 || !/[0-9]/.test(e.key)) return;
       buffer = (buffer + e.key).slice(-target.length);
       if (buffer === target) {
         buffer = '';
-        if (popup && popup.classList.contains('show')) {
-          popup.classList.remove('show');
-          return;
-        }
         if (!popup) {
           popup = document.createElement('div');
           popup.className = 'egg-logo-tip egg-1410-tip';
+          popup.textContent = "hi. you know why this number matters. 🤍";
           document.body.appendChild(popup);
         }
-        popup.textContent = messages[messageIndex];
-        messageIndex = (messageIndex + 1) % messages.length;
         popup.style.left = '50%';
         popup.style.top = '50%';
         popup.style.transform = 'translate(-50%,-50%)';
         popup.classList.add('show');
+        setTimeout(function () { popup.classList.remove('show'); }, 2600);
       }
     });
   })();
-
-  /* ── 17. Type "meow" → screen-wide paw burst ── */
-  (function () {
-    const target = 'meow';
-    let buffer = '';
-    let supervisorTip = null;
-
-    function showSupervisorMessage() {
-      if (!supervisorTip) {
-        supervisorTip = document.createElement('div');
-        supervisorTip.className = 'egg-logo-tip egg-supervisor-tip mono';
-        supervisorTip.textContent = 'You found Govind\'s secret supervisor. 🐾';
-        document.body.appendChild(supervisorTip);
-      }
-      supervisorTip.style.left = '50%';
-      supervisorTip.style.top = '50%';
-      supervisorTip.style.transform = 'translate(-50%, -50%)';
-      supervisorTip.classList.add('show');
-      setTimeout(function () { if (supervisorTip) supervisorTip.classList.remove('show'); }, 2600);
-    }
-
-    function showPaws() {
-      const pawCount = window.matchMedia('(max-width: 640px)').matches ? 14 : 24;
-      for (let i = 0; i < pawCount; i++) {
-        const paw = document.createElement('span');
-        paw.className = 'egg-paw';
-        paw.textContent = '🐾';
-        paw.style.left = (5 + Math.random() * 90) + 'vw';
-        paw.style.top = (6 + Math.random() * 84) + 'vh';
-        paw.style.setProperty('--paw-rotate', (-28 + Math.random() * 56) + 'deg');
-        paw.style.animationDelay = (i * 35) + 'ms';
-        document.body.appendChild(paw);
-        setTimeout(function () { paw.remove(); }, 2100 + i * 35);
-      }
-      showSupervisorMessage();
-    }
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key.length !== 1) return;
-      buffer = (buffer + e.key.toLowerCase()).slice(-target.length);
-      if (buffer === target) {
-        buffer = '';
-        showPaws();
-      }
-    });
-  })();
-
-  /* ── Spotify panel controls ── */
-  (function () {
-    const toggle = document.getElementById('spotifyToggle');
-    const panel = document.getElementById('spotifyPanel');
-    if (!toggle || !panel) return;
-
-    function setPanel(open) {
-      panel.classList.toggle('show', open);
-      panel.setAttribute('aria-hidden', String(!open));
-      toggle.setAttribute('aria-expanded', String(open));
-      if (open && window.loadSpotifyPlayback) window.loadSpotifyPlayback();
-    }
-
-    toggle.addEventListener('click', function () { setPanel(!panel.classList.contains('show')); });
-    panel.querySelectorAll('[data-spotify-close]').forEach(function (el) {
-      el.addEventListener('click', function () { setPanel(false); });
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') setPanel(false);
-    });
-  })();
-
-/* ── SPOTIFY INTEGRATION PLACEHOLDER ───────────────────────
-   Call window.updateSpotifyPlayback({ title, artist, artworkUrl, status })
-   after future Spotify API authentication and playback retrieval. */
-window.updateSpotifyPlayback = function (playback) {
-  const player = document.getElementById('spotifyPlayer');
-  const title = document.getElementById('spotifyTrackTitle');
-  const artist = document.getElementById('spotifyArtistName');
-  const artwork = document.getElementById('spotifyAlbumArt');
-  const status = document.getElementById('spotifyStatus');
-  if (!player || !title || !artist || !artwork || !status || !playback) return;
-
-  title.textContent = playback.title || 'No track currently playing';
-  artist.textContent = playback.artist || 'Spotify playback is paused';
-  status.textContent = playback.status || 'Playback data loaded.';
-  player.setAttribute('aria-busy', 'false');
-
-  if (playback.artworkUrl) {
-    artwork.style.backgroundImage = 'url("' + playback.artworkUrl + '")';
-    artwork.style.backgroundSize = 'cover';
-    artwork.style.backgroundPosition = 'center';
-    artwork.textContent = '';
-  }
-};
-
-/* Fetches real playback data from the private Vercel endpoint when the panel opens. */
-window.loadSpotifyPlayback = function () {
-  const player = document.getElementById('spotifyPlayer');
-  const status = document.getElementById('spotifyStatus');
-  if (!player || !status) return;
-
-  player.setAttribute('aria-busy', 'true');
-  status.textContent = 'Loading playback data…';
-
-  fetch('/api/spotify')
-    .then(function (response) {
-      if (!response.ok) throw new Error('Spotify request failed.');
-      return response.json();
-    })
-    .then(function (playback) {
-      window.updateSpotifyPlayback(playback);
-    })
-    .catch(function () {
-      window.updateSpotifyPlayback({
-        title: 'Spotify unavailable',
-        artist: 'Connect the Vercel Spotify environment variables to enable playback.',
-        status: 'Unable to load playback data.'
-      });
-    });
-};
 
   /* ── 14. Plain Arrow Up/Down → scroll to next/prev section ── */
   (function () {
@@ -822,8 +714,8 @@ window.loadSpotifyPlayback = function () {
       menu.className = 'egg-context-menu mono';
 
       const items = [
-        { label: 'View source on GitHub ↗', action: function () { window.open('https://github.com/notgovindkumar', '_blank', 'noopener'); } },
-        { label: 'Say hi ↗', action: function () { window.location.href = 'mailto:hello@notgovindkumar.dev'; } }
+        { label: 'View source on GitHub ↗', action: function () { window.open('https://github.com/notgovindkumar/notgovindkumar.github.io', '_blank', 'noopener'); } },
+        { label: 'Say hi ↗', action: function () { window.location.href = 'mailto:baranwalgovind2007@gmail.com'; } }
       ];
 
       items.forEach(function (item) {

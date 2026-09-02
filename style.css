@@ -250,18 +250,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 .nav__link:hover { color: var(--teal); }
 .nav__link:hover::after { right: 0; }
-.nav__music {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-2);
-  transition: color 0.2s, border-color 0.2s, background 0.2s;
-}
-.nav__music svg { width: 17px; height: 17px; }
-.nav__music:hover { color: var(--text); border-color: var(--border-hover); background: var(--teal-dim); }
 
 /* ── HERO ───────────────────────────────────────────────── */
 .hero {
@@ -746,92 +734,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   transform: translateY(-3px);
 }
 
-/* ── SPOTIFY PANEL ───────────────────────────────────────── */
-.spotify-panel {
-  position: fixed;
-  inset: 0;
-  z-index: 450;
-  visibility: hidden;
-  pointer-events: none;
-}
-.spotify-panel.show { visibility: visible; pointer-events: auto; }
-.spotify-panel__backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(10,10,10,0.28);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-.spotify-panel.show .spotify-panel__backdrop { opacity: 1; }
-.spotify-panel__content {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: min(420px, calc(100vw - 32px));
-  padding: 30px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.22);
-  opacity: 0;
-  transform: translateY(-12px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-.spotify-panel.show .spotify-panel__content { opacity: 1; transform: translateY(0); }
-.spotify-panel__close {
-  position: absolute;
-  top: 10px;
-  right: 14px;
-  color: var(--text-3);
-  font-size: 1.55rem;
-  line-height: 1;
-}
-.spotify-panel__label {
-  display: block;
-  font-size: 0.72rem;
-  letter-spacing: 0.13em;
-  color: var(--teal);
-}
-.spotify-panel__heading { margin: 6px 0 22px; font-family: var(--font-display); font-size: 1.6rem; }
-.spotify-panel__card {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  padding: 24px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-}
-.spotify-panel__art {
-  flex: 0 0 112px;
-  width: 112px;
-  height: 112px;
-  display: grid;
-  place-items: center;
-  background: var(--surface-2);
-  border: 1px dashed var(--border-hover);
-  border-radius: 8px;
-  color: var(--text-3);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-}
-.spotify-panel__details { min-width: 0; }
-.spotify-panel__eyebrow,
-.spotify-panel__status {
-  display: block;
-  font-size: 0.72rem;
-  letter-spacing: 0.05em;
-  color: var(--text-3);
-}
-.spotify-panel__title {
-  margin: 8px 0 4px;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  color: var(--text);
-}
-.spotify-panel__artist { margin: 0; color: var(--text-2); }
-.spotify-panel__status { margin-top: 14px; color: var(--teal); }
-
 .project-card__top {
   display: flex;
   align-items: center;
@@ -1090,9 +992,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .timeline__header { flex-direction: column; align-items: flex-start; }
   .timeline__meta { align-items: flex-start; }
   .projects__grid { grid-template-columns: 1fr; }
-  .spotify-panel__content { top: 10px; right: 10px; width: calc(100vw - 20px); padding: 24px 18px; }
-  .spotify-panel__card { align-items: flex-start; gap: 16px; padding: 18px; }
-  .spotify-panel__art { flex-basis: 84px; width: 84px; height: 84px; }
   .footer__inner { flex-direction: column; align-items: flex-start; }
 }
 
@@ -1316,7 +1215,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   color: #e8e8e8;
   box-shadow: 0 30px 80px rgba(0,0,0,0.5);
 }
-.egg-terminal__line { white-space: pre-line; }
 .egg-terminal__line::before { content: "$ "; color: #6ee7b7; }
 .egg-terminal__cursor {
   display: inline-block;
@@ -1435,32 +1333,7 @@ html.egg-inverted {
 .egg-card-flip.show { opacity: 1; transform: scale(1); }
 
 /* 13. "1410" popup — reuses .egg-logo-tip base */
-.egg-1410-tip {
-  z-index: 500;
-  width: min(420px, 86vw);
-  padding: 18px 20px;
-  white-space: pre-line;
-  text-align: center;
-  line-height: 1.55;
-}
-
-/* 17. "meow" paw burst */
-.egg-paw {
-  position: fixed;
-  z-index: 500;
-  pointer-events: none;
-  color: var(--text);
-  font-size: clamp(1.5rem, 4vw, 2.6rem);
-  opacity: 0;
-  transform: scale(0.4) rotate(var(--paw-rotate));
-  animation: eggPawPop 1.8s ease-out forwards;
-}
-@keyframes eggPawPop {
-  18% { opacity: 0.88; transform: scale(1) rotate(var(--paw-rotate)); }
-  78% { opacity: 0.72; }
-  100% { opacity: 0; transform: scale(0.75) rotate(var(--paw-rotate)); }
-}
-.egg-supervisor-tip { z-index: 500; max-width: min(250px, 74vw); white-space: normal; text-align: center; }
+.egg-1410-tip { z-index: 500; font-size: 0.85rem; padding: 12px 20px; }
 
 /* 15. Custom right-click context menu */
 .egg-context-menu {
