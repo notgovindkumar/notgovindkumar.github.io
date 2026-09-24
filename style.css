@@ -1397,3 +1397,50 @@ html.egg-inverted {
   border-bottom: 1px solid var(--border);
 }
 .egg-cheatsheet__line:last-child { border-bottom: none; }
+
+/* ══════════════════════════════════════════════
+   GIMMICKS — hero typewriter, footer clock/status, gh graph, spotify link
+═══════════════════════════════════════════════ */
+
+.hero__label#heroTypewriter { min-height: 1.4em; display: flex; align-items: center; gap: 2px; }
+.hero__label#heroTypewriter .egg-terminal__cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  animation: eggCursorBlink 1s step-end infinite;
+}
+@keyframes eggCursorBlink { 50% { opacity: 0; } }
+
+.footer__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 0.74rem;
+  color: var(--text-3);
+  margin-top: 10px;
+}
+.footer__status-dot { opacity: 0.5; }
+#footerBuildingText { color: var(--text-2); }
+
+.footer__ghgraph {
+  margin-top: 16px;
+  max-width: 100%;
+  overflow-x: auto;
+  opacity: 0.9;
+}
+.footer__ghgraph img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  filter: grayscale(1) contrast(1.05);
+}
+
+.footer__link--spotify svg { color: #1DB954; }
+.footer__link--spotify:hover svg { filter: drop-shadow(0 0 6px rgba(29,185,84,0.5)); }
+
+/* Reduced motion — applies only to the newer hero cursor / footer glow animations */
+@media (prefers-reduced-motion: reduce) {
+  .hero__label#heroTypewriter .egg-terminal__cursor { animation: none; }
+  .footer__link--spotify:hover svg { filter: none; }
+}

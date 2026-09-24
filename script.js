@@ -714,8 +714,8 @@
       menu.className = 'egg-context-menu mono';
 
       const items = [
-        { label: 'View source on GitHub ↗', action: function () { window.open('https://github.com/notgovindkumar/notgovindkumar.github.io', '_blank', 'noopener'); } },
-        { label: 'Say hi ↗', action: function () { window.location.href = 'mailto:baranwalgovind2007@gmail.com'; } }
+        { label: 'View source on GitHub ↗', action: function () { window.open('https://github.com/notgovindkumar', '_blank', 'noopener'); } },
+        { label: 'Say hi ↗', action: function () { window.location.href = 'mailto:hello@notgovindkumar.dev'; } }
       ];
 
       items.forEach(function (item) {
@@ -801,4 +801,71 @@
     });
   })();
 
+})();
+
+/* ══════════════════════════════════════════════
+   GIMMICKS
+═══════════════════════════════════════════════ */
+
+/* Hero — rotating typewriter tagline */
+(function () {
+  const el = document.getElementById('heroTypewriterText');
+  if (!el) return;
+
+  const phrases = [
+    "B.Tech Student '28 · SKIT Jaipur",
+    'Salesforce Admin & Developer',
+    'AI Enthusiast',
+    'Trailblazer Ranger',
+    'building intelligent CRM solutions'
+  ];
+
+  let phraseIdx = 0;
+  let charIdx = 0;
+  let deleting = false;
+
+  /* Respect reduced-motion: show the first phrase statically, no typing loop */
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    el.textContent = phrases[0];
+    return;
+  }
+
+  function tick() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      charIdx++;
+      el.textContent = current.slice(0, charIdx);
+      if (charIdx === current.length) {
+        deleting = true;
+        setTimeout(tick, 1600);
+        return;
+      }
+    } else {
+      charIdx--;
+      el.textContent = current.slice(0, charIdx);
+      if (charIdx === 0) {
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+      }
+    }
+    setTimeout(tick, deleting ? 30 : 55);
+  }
+  tick();
+})();
+
+/* Footer — live IST clock */
+(function () {
+  const el = document.getElementById('footerClock');
+  if (!el) return;
+
+  function update() {
+    const now = new Date();
+    const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+    const hh = String(ist.getHours()).padStart(2, '0');
+    const mm = String(ist.getMinutes()).padStart(2, '0');
+    const ss = String(ist.getSeconds()).padStart(2, '0');
+    el.textContent = 'IST ' + hh + ':' + mm + ':' + ss;
+  }
+  update();
+  setInterval(update, 1000);
 })();

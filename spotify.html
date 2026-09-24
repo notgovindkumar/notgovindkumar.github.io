@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Now Playing — Govind Kumar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.svg?v=2">
+  <style>
+    body.spotify-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .spotify-card {
+      width: min(480px, 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+      background: var(--bg);
+      position: relative;
+    }
+    .spotify-back {
+      position: absolute;
+      top: -44px;
+      left: 0;
+      font-size: 0.8rem;
+      color: var(--text-3);
+    }
+    .spotify-back:hover { color: var(--teal); }
+    .spotify-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--text-3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .spotify-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #555;
+    }
+    .spotify-dot.is-live { background: #1DB954; box-shadow: 0 0 8px #1DB954; animation: spDotPulse 1.6s ease-in-out infinite; }
+    @keyframes spDotPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    .spotify-body { display: flex; gap: 20px; align-items: center; }
+    .spotify-art {
+      width: 96px; height: 96px;
+      border-radius: 8px;
+      background: #111;
+      flex-shrink: 0;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+    .spotify-meta { min-width: 0; }
+    .spotify-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .spotify-artist {
+      font-size: 0.86rem;
+      color: var(--text-2);
+      margin-top: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .spotify-album {
+      font-size: 0.76rem;
+      color: var(--text-3);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .spotify-eq { display: flex; gap: 3px; align-items: flex-end; height: 14px; margin-top: 10px; }
+    .spotify-eq span { width: 3px; background: #1DB954; animation: spEq 0.9s ease-in-out infinite; }
+    .spotify-eq span:nth-child(1) { height: 6px; animation-delay: 0s; }
+    .spotify-eq span:nth-child(2) { height: 14px; animation-delay: 0.2s; }
+    .spotify-eq span:nth-child(3) { height: 9px; animation-delay: 0.4s; }
+    .spotify-eq span:nth-child(4) { height: 12px; animation-delay: 0.1s; }
+    @keyframes spEq { 0%,100% { transform: scaleY(0.4); } 50% { transform: scaleY(1); } }
+
+    .spotify-progress { margin-top: 22px; }
+    .spotify-progress-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .spotify-progress-fill { height: 100%; background: #1DB954; width: 0%; transition: width 1s linear; }
+    .spotify-progress-times { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-3); margin-top: 6px; }
+
+    .spotify-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 22px; font-size: 0.8rem; color: var(--text-3);
+    }
+    .spotify-link:hover { color: #1DB954; }
+
+    .spotify-state { font-size: 0.85rem; color: var(--text-3); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spotify-dot.is-live, .spotify-eq span { animation: none; }
+      .spotify-progress-fill { transition: none; }
+    }
+  </style>
+</head>
+<body class="spotify-page">
+
+  <div class="spotify-card">
+    <a href="index.html" class="spotify-back mono">← back</a>
+    <div class="spotify-eyebrow mono">
+      <span class="spotify-dot" id="spDot"></span>
+      <span id="spEyebrowText">checking spotify…</span>
+    </div>
+
+    <div id="spContent">
+      <p class="spotify-state mono">loading…</p>
+    </div>
+  </div>
+
+  <script>
+    /* ── Point this at your deployed serverless function ── */
+    /* If your API function lives on the same domain as this page
+       (e.g. deployed on Vercel and this page served from Vercel too),
+       leave this as '/api/now-playing'.
+       If this page is on GitHub Pages and the function is on Vercel,
+       set the full URL, e.g. 'https://your-project.vercel.app/api/now-playing' */
+    const NOW_PLAYING_API = '/api/now-playing';
+
+    const dot = document.getElementById('spDot');
+    const eyebrow = document.getElementById('spEyebrowText');
+    const content = document.getElementById('spContent');
+
+    /* Escape API-provided text before it is placed in innerHTML */
+    function esc(v) {
+      return String(v == null ? '' : v)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    /* Only allow http(s) URLs for links/images that come from the API */
+    function safeUrl(u, fallback) {
+      return /^https?:\/\//i.test(u || '') ? u : fallback;
+    }
+
+    function fmtTime(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      return m + ':' + String(s).padStart(2, '0');
+    }
+
+    function renderTrack(data) {
+      dot.classList.toggle('is-live', !!data.isPlaying);
+      eyebrow.textContent = data.isPlaying ? 'now playing on spotify' : 'last played on spotify';
+
+      const pct = data.durationMs ? Math.min(100, (data.progressMs / data.durationMs) * 100) : 0;
+
+      content.innerHTML =
+        '<div class="spotify-body">' +
+          '<img class="spotify-art" src="' + esc(safeUrl(data.albumArt, '')) + '" alt="' + esc(data.album) + ' cover" />' +
+          '<div class="spotify-meta">' +
+            '<div class="spotify-title">' + esc(data.title || 'Unknown') + '</div>' +
+            '<div class="spotify-artist">' + esc(data.artist) + '</div>' +
+            '<div class="spotify-album">' + esc(data.album) + '</div>' +
+            (data.isPlaying ? '<div class="spotify-eq"><span></span><span></span><span></span><span></span></div>' : '') +
+          '</div>' +
+        '</div>' +
+        (data.isPlaying ? (
+          '<div class="spotify-progress">' +
+            '<div class="spotify-progress-track"><div class="spotify-progress-fill" style="width:' + pct + '%"></div></div>' +
+            '<div class="spotify-progress-times mono"><span>' + fmtTime(data.progressMs) + '</span><span>' + fmtTime(data.durationMs) + '</span></div>' +
+          '</div>'
+        ) : '') +
+        '<a class="spotify-link mono" href="' + esc(safeUrl(data.songUrl, 'https://open.spotify.com')) + '" target="_blank" rel="noopener">open in spotify ↗</a>';
+    }
+
+    function renderError(msg) {
+      eyebrow.textContent = 'spotify unavailable';
+      content.innerHTML = '<p class="spotify-state mono">' + msg + '</p>';
+    }
+
+    fetch(NOW_PLAYING_API)
+      .then(function (res) {
+        if (!res.ok) throw new Error('API returned ' + res.status);
+        return res.json();
+      })
+      .then(renderTrack)
+      .catch(function () {
+        renderError("couldn't reach the now-playing API — check NOW_PLAYING_API in spotify.html and that the serverless function is deployed.");
+      });
+  </script>
+</body>
+</html>

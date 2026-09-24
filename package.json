@@ -1,0 +1,6 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "type": "module",
+  "description": "Static portfolio; api/now-playing.js is an optional Vercel serverless function for the Spotify page."
+}
