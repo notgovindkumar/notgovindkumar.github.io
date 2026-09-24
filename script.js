@@ -902,3 +902,35 @@ async function updateFooterSpotify() {
 updateFooterSpotify();
 
 setInterval(updateFooterSpotify, 10000);
+
+
+
+let spotifyMode = false;
+let spotifyBuffer = '';
+
+
+
+document.addEventListener('keydown', (e) => {
+  spotifyBuffer += e.key.toLowerCase();
+
+  if (spotifyBuffer.length > 20) {
+    spotifyBuffer = spotifyBuffer.slice(-20);
+  }
+
+  if (spotifyBuffer.includes('spotify')) {
+    activateSpotifyMode();
+    spotifyBuffer = '';
+  }
+});
+
+
+
+function activateSpotifyMode() {
+  document.body.classList.add('spotify-mode');
+
+  loadSpotifyVisualMode();
+}
+
+
+
+
