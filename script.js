@@ -859,13 +859,17 @@
   if (!el) return;
 
   function update() {
-    const now = new Date();
-    const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-    const hh = String(ist.getHours()).padStart(2, '0');
-    const mm = String(ist.getMinutes()).padStart(2, '0');
-    const ss = String(ist.getSeconds()).padStart(2, '0');
-    el.textContent = 'IST ' + hh + ':' + mm + ':' + ss;
+    const time = new Intl.DateTimeFormat('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }).format(new Date());
+
+    el.textContent = 'IST ' + time;
   }
+
   update();
   setInterval(update, 1000);
 })();
