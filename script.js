@@ -931,6 +931,35 @@ function activateSpotifyMode() {
   loadSpotifyVisualMode();
 }
 
+async function loadSpotifyVisualMode(){
 
+  const res = await fetch(
+    'https://notgovindkumar-github-io.vercel.app/api/now-playing'
+  );
+
+  const data = await res.json();
+
+  document.getElementById('spotifyAlbumArt').src =
+    data.albumArt;
+
+  document.getElementById('spotifySong').textContent =
+    data.title;
+
+  document.getElementById('spotifyArtist').textContent =
+    data.artist;
+
+  document.getElementById('spotifyBlurBg').style.backgroundImage =
+    `url(${data.albumArt})`;
+}
+
+
+
+document.addEventListener('keydown',(e)=>{
+
+  if(e.key === 'Escape'){
+    document.body.classList.remove('spotify-mode');
+  }
+
+});
 
 
