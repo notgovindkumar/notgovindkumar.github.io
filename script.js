@@ -873,3 +873,32 @@
   update();
   setInterval(update, 1000);
 })();
+
+
+
+const SPOTIFY_API =
+  'https://notgovindkumar-github-io.vercel.app/api/now-playing';
+
+
+async function updateFooterSpotify() {
+  const el = document.getElementById('footerSpotify');
+
+  if (!el) return;
+
+  try {
+    const res = await fetch(SPOTIFY_API);
+
+    if (!res.ok) throw new Error();
+
+    const data = await res.json();
+
+    el.textContent =
+      '🎵 ' + data.title + ' — ' + data.artist;
+  } catch (err) {
+    el.textContent = '🎵 Spotify offline';
+  }
+}
+
+updateFooterSpotify();
+
+setInterval(updateFooterSpotify, 10000);
