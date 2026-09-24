@@ -131,7 +131,8 @@
        leave this as '/api/now-playing'.
        If this page is on GitHub Pages and the function is on Vercel,
        set the full URL, e.g. 'https://your-project.vercel.app/api/now-playing' */
-    const NOW_PLAYING_API = 'https://notgovindkumar-github-io.vercel.app/api/now-playing';
+    let progressTimer = null;
+    const NOW_PLAYING_API = '/api/now-playing';
 
     const dot = document.getElementById('spDot');
     const eyebrow = document.getElementById('spEyebrowText');
@@ -161,6 +162,30 @@
       eyebrow.textContent = data.isPlaying ? 'now playing on spotify' : 'last played on spotify';
 
       const pct = data.durationMs ? Math.min(100, (data.progressMs / data.durationMs) * 100) : 0;
+      if (progressTimer) {
+  clearInterval(progressTimer);
+}
+
+if (data.isPlaying) {
+  let currentProgress = data.progressMs;
+
+  progressTimer = setInterval(() => {
+    currentProgress += 1000;
+
+    const fill = document.querySelector('.spotify-progress-fill');
+    const times = document.querySelector('.spotify-progress-times span');
+
+    if (!fill || !times) return;
+
+    const livePct = Math.min(
+      100,
+      (currentProgress / data.durationMs) * 100
+    );
+
+    fill.style.width = livePct + '%';
+    times.textContent = fmtTime(currentProgress);
+  }, 1000);
+}
 
       content.innerHTML =
         '<div class="spotify-body">' +
@@ -186,15 +211,28 @@
       content.innerHTML = '<p class="spotify-state mono">' + msg + '</p>';
     }
 
-    fetch(NOW_PLAYING_API)
-      .then(function (res) {
-        if (!res.ok) throw new Error('API returned ' + res.status);
-        return res.json();
-      })
-      .then(renderTrack)
-      .catch(function () {
-        renderError("couldn't reach the now-playing API — check NOW_PLAYING_API in spotify.html and that the serverless function is deployed.");
-      });
+    async function loadNowPlaying() {
+  try {
+    const res = await fetch(NOW_PLAYING_API);
+
+    if (!res.ok) {
+      throw new Error('API returned ' + res.status);
+    }
+
+    const data = await res.json();
+    renderTrack(data);
+  } catch (e) {
+    renderError(
+      "couldn't reach the now-playing API — check NOW_PLAYING_API in spotify.html and that the serverless function is deployed."
+    );
+  }
+}
+
+// First load
+loadNowPlaying();
+
+// Refresh every 5 seconds
+setInterval(loadNowPlaying, 5000);
   </script>
 </body>
 </html>
