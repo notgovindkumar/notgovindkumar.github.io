@@ -82,8 +82,19 @@ export default async function handler(req, res) {
     // Nothing playing right now → fall back to most recently played
     const recentRes = await fetch(RECENTLY_PLAYED_URL, { headers: authHeader });
     if (!recentRes.ok) {
-      throw new Error(`Recently-played fetch failed: ${recentRes.status}`);
-    }
+
+  const spotifyError = await recentRes.text();
+
+  console.log(
+    "SPOTIFY RECENT ERROR:",
+    recentRes.status,
+    spotifyError
+  );
+
+  throw new Error(
+    `Recently-played fetch failed: ${recentRes.status} ${spotifyError}`
+  );
+}
     const recentData = await recentRes.json();
     const lastTrack = recentData.items?.[0]?.track;
 
