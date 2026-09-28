@@ -83,13 +83,17 @@ export default async function handler(req, res) {
     const recentRes = await fetch(RECENTLY_PLAYED_URL, { headers: authHeader });
     if (!recentRes.ok) {
 
-  const spotifyError = await recentRes.text();
+  return res.status(200).json({
+    isPlaying: false,
+    title: "Spotify Premium Expired 😭",
+    artist: "Govind Kumar",
+    album: "Portfolio Fallback Mode",
+    albumArt: "",
+    progressMs: 0,
+    durationMs: 0
+  });
 
-  console.log(
-    "SPOTIFY RECENT ERROR:",
-    recentRes.status,
-    spotifyError
-  );
+}
 
   throw new Error(
     `Recently-played fetch failed: ${recentRes.status} ${spotifyError}`
