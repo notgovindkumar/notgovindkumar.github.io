@@ -80,20 +80,12 @@ export default async function handler(req, res) {
     }
 
     // Nothing playing right now → fall back to most recently played
-    const recentRes = await fetch(RECENTLY_PLAYED_URL, { headers: authHeader });
-    if (!recentRes.ok) {
+    const recentRes = await fetch(RECENTLY_PLAYED_URL, {
+  headers: authHeader,
+});
 
-  return res.status(200).json({
-    isPlaying: false,
-    title: "Spotify Premium Expired 😭",
-    artist: "Govind Kumar",
-    album: "Portfolio Fallback Mode",
-    albumArt: "",
-    progressMs: 0,
-    durationMs: 0
-  });
-
-}
+if (!recentRes.ok) {
+  const spotifyError = await recentRes.text();
 
   throw new Error(
     `Recently-played fetch failed: ${recentRes.status} ${spotifyError}`
